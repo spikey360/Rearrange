@@ -5,15 +5,14 @@
 package rearrangeword.rearrangegui;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -25,7 +24,7 @@ import rearrangeword.swing.Console;
  *
  * @author Riju
  */
-public class Rearrange extends JApplet {
+public class Rearrange extends JPanel {
 
     private JTextField inWord;
     private JTextArea outWords;
@@ -50,7 +49,6 @@ public class Rearrange extends JApplet {
 
                     rMain.rearrange(inWord.getText());
 
-                    //pu.completed=true;
                     Object[] solvs = rMain.getWords().toArray();
                     for (int i = 0; i < solvs.length; i++) {
                         outWords.append((String) solvs[i] + "\n");
@@ -63,9 +61,6 @@ public class Rearrange extends JApplet {
             Thread xRun = new Thread(runner);
 
             xRun.start();
-
-
-
         }
     }
 
@@ -75,19 +70,18 @@ public class Rearrange extends JApplet {
         boolean complete = false;
 
         ProgressUpdater() {
-            //d = x;
         }
 
         public void run() {
             pb.setMinimum(0);
             pb.setMaximum(rMain.getMax() - rMain.getMin());
-            if (complete == false) {
+            if (!complete) {
                 pb.setValue(rMain.getCurrent());
             }
         }
     }
 
-    Rearrange() {
+    public Rearrange() {
         //look and feel
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -95,40 +89,43 @@ public class Rearrange extends JApplet {
             e.printStackTrace();
         }
         //initialize
-        //rMain = new Main();
         inWord = new JTextField();
         outWords = new JTextArea(10, 2);
         rearrangeButton = new JButton("Rearrange!");
         rearrangeButton.addActionListener(new RearrangeListener());
         pb = new JProgressBar();
         label = new JLabel("Created by spikey360-spikey360@yahoo.co.in");
-    //add actionListeners
     }
 
-    public void init() {
-        Container cp = getContentPane();
+    public void initialize() {
+        setLayout(new BorderLayout());
         Box b1 = Box.createHorizontalBox();
         b1.add(inWord);
         b1.add(rearrangeButton);
-        cp.add(b1, BorderLayout.NORTH);
+        add(b1, BorderLayout.NORTH);
         Box b2 = Box.createHorizontalBox();
         b2.add(label);
-        //b2.add(pb);
-        cp.add(b2, BorderLayout.SOUTH);
-        cp.add(outWords, BorderLayout.CENTER);
+        add(b2, BorderLayout.SOUTH);
+        add(outWords, BorderLayout.CENTER);
     }
 
-    public void start() {
-    }
     static java.net.URL imgUrl = Rearrange.class.getResource("rearrangeGUIicon.png");
     static Image ico = new ImageIcon(imgUrl).getImage();
 
     /**
      * @param args the command line arguments
      */
+    /**
+     * The main method serves as the entry point for the application.
+     * It initializes a Console object with a Rearrange instance and specified dimensions,
+     * starts the console, and sets an icon image for the console window.
+     *
+     * @param args Command-line arguments passed to the application.
+     */
     public static void main(String[] args) {
-        // TODO code application logic here
-        Console c = new Console(new Rearrange(), 300, 200);
+        Rearrange panel = new Rearrange();
+        panel.initialize();
+        Console c = new Console(panel, 300, 200);
         c.run();
         c.setIconImage(ico);
     }
