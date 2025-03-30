@@ -13,60 +13,59 @@ import java.util.HashMap;
  * @author Riju
  */
 public class LexiconNode {
-    private HashMap subMap;
-    private ArrayList words;
+    private HashMap<Character, LexiconNode> subMap;
+    private ArrayList<String> words;
     private boolean root;
     private int level; //sets the current level initial is 0 ; -1, lower for root
-    public static final char BEGINLETTER='a';
-    public static final char ENDLETTER='z';
+    public static final char BEGINLETTER = 'a';
+    public static final char ENDLETTER = 'z';
 
-    public LexiconNode(int level){
-        subMap=new HashMap();
-        words=new ArrayList();
-        this.level=level;
-        if(level<=-1)
-            root=true;
+    public LexiconNode(int level) {
+        subMap = new HashMap<>();
+        words = new ArrayList<>();
+        this.level = level;
+        if (level <= -1)
+            root = true;
     }
 
-    public boolean isRoot(){
+    public boolean isRoot() {
         return root;
     }
 
-    public void createSubstructure(){
+    public void createSubstructure() {
         //current lexiconnode is our only concern nothing beyond it
-        for(char i=BEGINLETTER;i<=ENDLETTER;i++){
-            subMap.put(new Character(i), new LexiconNode(level+1));
+        for (char i = BEGINLETTER; i <= ENDLETTER; i++) {
+            subMap.put(i, new LexiconNode(level + 1));
             //cause the next lexiconnode is a subordinate
         }
     }
 
-    public LexiconNode getNode(char x){
-        return (LexiconNode)subMap.get(new Character(x));
+    public LexiconNode getNode(char x) {
+        return subMap.get(x);
     }
 
-    public void addWord(String xl){
-        String x=xl.toLowerCase();
-        Character begin=new Character(x.charAt(level+1));
-        LexiconNode ln=getNode(begin);
+    public void addWord(String xl) {
+        String x = xl.toLowerCase();
+        Character begin = x.charAt(level + 1);
+        LexiconNode ln = getNode(begin);
         ln.words.add(x);
     }
 
-    public ArrayList getWords(){
+    public ArrayList<String> getWords() {
         return words;
     }
 
-    public int getLevel(){
+    public int getLevel() {
         return level;
     }
 
-    public static void main(String args[]){
-        LexiconNode ln=new LexiconNode(0);
+    public static void main(String args[]) {
+        LexiconNode ln = new LexiconNode(0);
         ln.createSubstructure();
         ln.addWord("arash");
         ln.addWord("Guitara");
-        LexiconNode nln=ln.getNode('u');
+        LexiconNode nln = ln.getNode('u');
         System.out.println(nln.getWords().get(0));
         //test results are a success!
     }
-
 }
