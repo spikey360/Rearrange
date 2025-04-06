@@ -89,7 +89,7 @@ public class Rearrange extends JPanel {
             e.printStackTrace();
         }
         //initialize
-        inWord = new JTextField();
+        inWord = new JTextField(9);
         outWords = new JTextArea(10, 2);
         rearrangeButton = new JButton("Rearrange!");
         rearrangeButton.addActionListener(new RearrangeListener());
@@ -97,6 +97,17 @@ public class Rearrange extends JPanel {
         label = new JLabel("Created by spikey360-spikey360@yahoo.co.in");
     }
 
+    /**
+     * Initializes the GUI components and sets up the layout for the application.
+     * <p>
+     * This method configures the main layout using a BorderLayout and organizes
+     * the components into three sections:
+     * <ul>
+     *   <li>A horizontal box at the top (NORTH) containing the input field and the rearrange button.</li>
+     *   <li>A horizontal box at the bottom (SOUTH) containing a label.</li>
+     *   <li>A central (CENTER) area for displaying output words.</li>
+     * </ul>
+     */
     public void initialize() {
         setLayout(new BorderLayout());
         Box b1 = Box.createHorizontalBox();
